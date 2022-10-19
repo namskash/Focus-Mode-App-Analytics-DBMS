@@ -1,4 +1,7 @@
 Focus mode DBMS
+A focus mode database, that keeps track of focus sessions, apps used, breaks taken, and app timers.
+This project uses MySQL and Python to simulate the features and functionalities of a focus mode assist app.
+The aim of this project is to enhance our understanding of MySQL and to create a minimalistic UI for the app using tkinter in Python.
 
 Tables:
 	* Sessions
