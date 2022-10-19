@@ -31,6 +31,7 @@ The aim of this project is to enhance our understanding of MySQL and to create a
 + endTime
 + allowedDuration
 + actualDuration (automatic set?)
++ sessionID (fk)
 
 ### 3. Apps:
 *A list of all apps on device*
@@ -46,11 +47,6 @@ The aim of this project is to enhance our understanding of MySQL and to create a
 + snooze (amount of time)
 
 ## ***Relationship Descriptions:***
-### Session_breaks:
-*Relationship between sessions and breaks. 1:N relatiosnship*
-+ sessionID
-+ breakID
-
 ###  Session_apps:
 *Apps allowed during focus mode session. i.e the app(s) you had to focus on*
 + sessionID
