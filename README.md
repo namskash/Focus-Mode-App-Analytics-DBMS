@@ -14,7 +14,7 @@ The aim of this project is to enhance our understanding of MySQL and to create a
 + Session_apps
 + Break_apps
 
-##Descriptions:
+## Table Descriptions:
 ### 1. Sessions: 
 * A history of all sessions *
 + sessionID (pk)
@@ -44,6 +44,8 @@ The aim of this project is to enhance our understanding of MySQL and to create a
 + appID
 + date
 + snooze (amount of time)
+
+## Relationship Descriptions:
 
 ### Session_breaks:
 * Relationship between sessions and breaks. 1:N relatiosnship *
