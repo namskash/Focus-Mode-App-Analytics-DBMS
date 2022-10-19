@@ -4,58 +4,58 @@ This project uses MySQL and Python to simulate the features and functionalities 
 The aim of this project is to enhance our understanding of MySQL and to create a minimalistic UI for the app using tkinter in Python.
 
 ## Tables:
-	+ Sessions
-	+ Breaks
-	+ Apps
-	+ Warnings
++ Sessions
++ Breaks
++ Apps
++ Warnings
 
 ## Relations:
-	+ Session_breaks
-	+ Session_apps
-	+ Break_apps
++ Session_breaks
++ Session_apps
++ Break_apps
 
-## Descriptions:
-	### 1. Sessions: 
-	* A history of all sessions *
-		+ sessionID (pk)
-		+ date
-		+ startTime
-		+ endTime
-		+ duration (automatic set?)
-	
-	### 2. Breaks:
-	* A history of all breaks *
-		+ breakID
-		+ date
-		+ startTime
-		+ endTime
-		+ allowedDuration
-		+ actualDuration (automatic set?)
-	
-	### 3. Apps:
-	* A list of all apps on device *
-		+ appID
-		+ privileged (yes/no)
-		+ timers (if not privileged)
-		+ timerMAX
+##Descriptions:
+### 1. Sessions: 
+* A history of all sessions *
++ sessionID (pk)
++ date
++ startTime
++ endTime
++ duration (automatic set?)
 
-	### 4. Warnings:
-	* Timer limit reached *
-		+ appID
-		+ date
-		+ snooze (amount of time)
+### 2. Breaks:
+* A history of all breaks *
++ breakID
++ date
++ startTime
++ endTime
++ allowedDuration
++ actualDuration (automatic set?)
 
-	### Session_breaks:
-	* Relationship between sessions and breaks. 1:N relatiosnship *
-		+ sessionID
-		+ breakID
+### 3. Apps:
+* A list of all apps on device *
++ appID
++ privileged (yes/no)
++ timers (if not privileged)
++ timerMAX
 
-	###  Session_apps:
-	* Apps allowed during focus mode session. i.e the app(s) you had to focus on *
-		+ sessionID
-		+ appID
+### 4. Warnings:
+* Timer limit reached *
++ appID
++ date
++ snooze (amount of time)
 
-	###  Break_apps:
-	* Apps used during breaks *
-		+ breakID
-		+ appID
+### Session_breaks:
+* Relationship between sessions and breaks. 1:N relatiosnship *
++ sessionID
++ breakID
+
+###  Session_apps:
+* Apps allowed during focus mode session. i.e the app(s) you had to focus on *
++ sessionID
++ appID
+
+###  Break_apps:
+* Apps used during breaks *
++ breakID
++ appID
