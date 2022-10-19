@@ -14,9 +14,9 @@ The aim of this project is to enhance our understanding of MySQL and to create a
 + Session_apps
 + Break_apps
 
-## Table Descriptions:
+## ***Table Descriptions:***
 ### 1. Sessions: 
-* A history of all sessions *
+*A history of all sessions*
 + sessionID (pk)
 + date
 + startTime
@@ -24,7 +24,7 @@ The aim of this project is to enhance our understanding of MySQL and to create a
 + duration (automatic set?)
 
 ### 2. Breaks:
-* A history of all breaks *
+*A history of all breaks*
 + breakID
 + date
 + startTime
@@ -33,31 +33,30 @@ The aim of this project is to enhance our understanding of MySQL and to create a
 + actualDuration (automatic set?)
 
 ### 3. Apps:
-* A list of all apps on device *
+*A list of all apps on device*
 + appID
 + privileged (yes/no)
 + timers (if not privileged)
 + timerMAX
 
 ### 4. Warnings:
-* Timer limit reached *
+*Timer limit reached*
 + appID
 + date
 + snooze (amount of time)
 
-## Relationship Descriptions:
-
+## ***Relationship Descriptions:***
 ### Session_breaks:
-* Relationship between sessions and breaks. 1:N relatiosnship *
+*Relationship between sessions and breaks. 1:N relatiosnship*
 + sessionID
 + breakID
 
 ###  Session_apps:
-* Apps allowed during focus mode session. i.e the app(s) you had to focus on *
+*Apps allowed during focus mode session. i.e the app(s) you had to focus on*
 + sessionID
 + appID
 
 ###  Break_apps:
-* Apps used during breaks *
+*Apps used during breaks*
 + breakID
 + appID
