@@ -33,6 +33,7 @@ $ Relations:
 	#3 Apps:
 	// A list of all apps on device
 		* appID
+		* appName
 		* privileged (yes/no)
 		* timer (if not privileged)
 		* timerMAX
