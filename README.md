@@ -36,6 +36,7 @@ The aim of this project is to enhance our understanding of MySQL and to create a
 ### 3. Apps:
 *A list of all apps on device*
 + appID
++ appName
 + privileged (yes/no)
 + timers (if not privileged)
 + timerMAX
