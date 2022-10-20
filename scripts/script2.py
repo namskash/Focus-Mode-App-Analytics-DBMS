@@ -1,7 +1,6 @@
 import mysql.connector
 from datetime import date, timedelta
-from random import choices
-from random import randint
+from random import randint,choices,choice
 
 mydb = mysql.connector.connect(
 	host="localhost",
@@ -12,6 +11,7 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor(buffered=True)
 
+#"""
 # SESSIONS + BREAKS
 date1, date2 = date(2021,11,4), date.today()
 dates = [date1]
@@ -26,10 +26,14 @@ dates = list(choices(dates,k=100))	# k=number of dates needed
 sessionID = 1
 sessionDurations = [30,45,60,75,90,105,120,135,150,165,180]	# all in minutes
 sessionStartTimes = 0
+#"""
 
+"""
 # APPS
 sessionAppList = ['MS Word','MS PowerPoint','MS Excel','VS Code','Eclipse','Oracle VirtualBox','Ubuntu 22.04 VM']
 breakAppList = ['Google Chrome','YouTube','Prime Video','Netflix','Solitaire','Hangman']
+timers = ["30","45"]
+timersMAX = ["45","60"]
 
 for i in range(len(sessionAppList)):
 	appID = "APP" + "0" * (3 - len(str(i+1))) + str(i+1)
@@ -38,7 +42,7 @@ for i in range(len(sessionAppList)):
 id = len(sessionAppList) + 1
 for i in range(len(breakAppList)):
 	appID = "APP" + "0" * (3 - len(str(i+id))) + str(i+id)
-	mycursor.execute("insert into APPS values (%s,%s,%s,%s,%s)",(appID,breakAppList[i],0,None,None))
+	mycursor.execute("insert into APPS values (%s,%s,%s,%s,%s)",(appID,breakAppList[i],0,choice(timers) + " mins",choice(timersMAX) + " mins"))
 
 mydb.commit()
 
@@ -47,3 +51,4 @@ res = mycursor.fetchall()
 
 for i in res:
 	print(i)
+"""
