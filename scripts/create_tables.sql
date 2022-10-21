@@ -44,10 +44,14 @@ create table SESSION_APPS (
 	sessionID varchar(10) not null,
 	appID varchar(10) not null,
 	primary key (sessionID, appID)
+	foreign key (sessionID) references SESSIONS (sessionID),
+	foreign key (appID) references APPS (appID)
 );
 
 create table BREAK_APPS (
 	breakID varchar(10) not null,
 	appID varchar(10) not null,
-	primary key (breakID, appID)
+	primary key (breakID, appID),
+	foreign key (breakID) references BREAKS (breakID),
+	foreign key (appID) references APPS (appID)
 );
