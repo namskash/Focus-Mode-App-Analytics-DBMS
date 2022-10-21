@@ -16,7 +16,7 @@ create table BREAKS (
 	breakDate date not null,
 	startTime time not null,
 	endTime time not null,
-	allowedDuration varchar(20) not null,
+	breakDuration varchar(20) not null,
 	sessionID varchar(10) not null,
 	primary key (breakID),
 	foreign key (sessionID) references SESSIONS(sessionID)
