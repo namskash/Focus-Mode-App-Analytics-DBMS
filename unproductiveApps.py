@@ -45,7 +45,7 @@ def unproductiveApps():
 
 	back_img = PhotoImage(file="images/back.png")
 	backButton = Button(canvas1,image=back_img,borderwidth=0,highlightthickness = 0, bd = 0)
-	backButton.place(relx=0.01,rely=0.035)
+	backButton.place(relx=0.013,rely=0.036)
 
 
 	style=Style()
