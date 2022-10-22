@@ -9,7 +9,7 @@ import numpy as np
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 
-#import welcomePage
+import welcomePage
 
 mydb = mysql.connector.connect(
 	host="localhost",
@@ -19,6 +19,11 @@ mydb = mysql.connector.connect(
 )
 
 mycursor = mydb.cursor(buffered=True)
+
+def home():
+	global root
+	root.destroy()
+	welcomePage.homeScreen()
 
 def unproductiveApps():
 	global root
@@ -44,7 +49,7 @@ def unproductiveApps():
 	#button = [welcomePage.homeScreen]
 
 	back_img = PhotoImage(file="images/back.png")
-	backButton = Button(canvas1,image=back_img,borderwidth=0,highlightthickness = 0, bd = 0)
+	backButton = Button(canvas1,image=back_img,borderwidth=0,highlightthickness = 0, bd = 0,command=home)
 	backButton.place(relx=0.013,rely=0.036)
 
 
@@ -130,4 +135,4 @@ def unproductiveApps():
 	canvas1.place(relwidth=1,relheight=1,relx=0,rely=0)
 	root.mainloop()
 
-unproductiveApps()
+#unproductiveApps()
