@@ -8,12 +8,11 @@ from time import sleep
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
-"""
+
 import pastSessions
 import productiveApps
 import unproductiveApps
 import timers
-"""
 
 mydb = mysql.connector.connect(
 	host="localhost",
@@ -25,13 +24,13 @@ mydb = mysql.connector.connect(
 mycursor = mydb.cursor(buffered=True)
 
 def clicked(num):
-	global button_id
-	button_id = num+1
-	global buttons
+	global module_id
+	module_id = num
+	global modules
 
 	sleep(0.05)
 	root.destroy()
-	#buttons[button_id].invoke()
+	modules[module_id]()	# call func
 
 # When the mouse hovers over one of the buttons:
 def enter(i, event):
@@ -71,13 +70,17 @@ def homeScreen():
 	y=0.15
 	backgrounds=["#00ff00","#00ffff","#ff1a75","#ffff00"]
 	backgrounds_active=["#004d00","#004d4d","#660029","#4d4d00"]
+	
 	functions=["View past sessions","View most productive apps","Unproductive app-o-meter","View/update all timers"]  # I/P From table #3
 	buttonNames = ["Sessions","Productive","Break-apps","Timers"]
-	global buttons
-	buttons = []	# [pastSessions.pastSessions, productiveApps.productiveApps,unproductiveApps.unproductiveApps,timers.timers]
 
-	global button_id
-	button_id=1
+	global modules
+	modules = [pastSessions.pastSessions, productiveApps.productiveApps,unproductiveApps.unproductiveApps,timers.timers]
+	global module_id
+	module_id=0
+
+	global buttons
+	buttons = []
 
 	for i in range(no_of_projects):
 		frame=LabelFrame(canvas1,bg="#001a33",padx=10,pady=5,relief=SUNKEN,bd=5)
@@ -147,10 +150,5 @@ def homeScreen():
 
 	canvas1.place(relwidth=1,relheight=1,relx=0,rely=0)
 	root.mainloop()
-	
-	try:
-		return button_id
-	except:
-		sys.exit()
 
-homeScreen()
+#homeScreen()
