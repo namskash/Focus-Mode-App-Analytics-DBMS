@@ -20,7 +20,6 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor(buffered=True)
 
-#"""
 # SESSIONS + BREAKS
 date1, date2 = date(2021,11,4), date.today()
 dates = [date1]
@@ -86,11 +85,6 @@ mydb.commit()
 mycursor.execute("select * from APPS")
 res = mycursor.fetchall()
 
-# WARNINGS
-warnings = 0
-mycursor.execute("select count(breakID) from BREAKS")
-breaksSQL = mycursor.fetchall()
-
 # SESSION_APPS
 mycursor.execute("select sessionID from SESSIONS")
 temp = mycursor.fetchall()
@@ -110,7 +104,6 @@ for i in range(len(sessionIDs)):
 
 	for j in temp:
 		mycursor.execute("insert into SESSION_APPS values (%s,%s)",(sessionIDs[i],j))
-#"""
 
 # BREAK_APPS
 mycursor.execute("select breakID from BREAKS")
