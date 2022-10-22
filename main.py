@@ -1,0 +1,2 @@
+import welcomePage
+welcomePage.homeScreen()
