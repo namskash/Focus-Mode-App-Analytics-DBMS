@@ -84,7 +84,7 @@ def productiveApps():
 	apps.place(relx = 0.05,rely = 0.15,relheight = 0.75,relwidth = 0.5)
 
 	# Get appIDs and number of breaks the app was used in
-	mycursor.execute("select appID,count(appID) from SESSION_APPS group by appID order by count(appID)")
+	mycursor.execute("select appID,count(appID) from SESSION_APPS group by appID order by appID")
 	temp = mycursor.fetchall()
 	appIDs = []
 	appBreakCount = []
