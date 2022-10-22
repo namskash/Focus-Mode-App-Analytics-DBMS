@@ -10,7 +10,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 from os import system
 
-#import welcomePage
+import welcomePage
 
 mydb = mysql.connector.connect(
 	host="localhost",
@@ -23,8 +23,8 @@ mycursor = mydb.cursor(buffered=True)
 
 def home():
 	global root
-	system('welcomePage.py')
 	root.destroy()
+	welcomePage.homeScreen()
 
 def productiveApps():
 	global root
@@ -136,4 +136,4 @@ def productiveApps():
 	canvas1.place(relwidth=1,relheight=1,relx=0,rely=0)
 	root.mainloop()
 
-productiveApps()
+#productiveApps()
