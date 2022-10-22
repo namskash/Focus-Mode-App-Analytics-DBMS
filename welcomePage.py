@@ -1,3 +1,4 @@
+from turtle import bgcolor
 import mysql.connector
 from tkinter import *
 from PIL import ImageTk
@@ -7,11 +8,12 @@ from time import sleep
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
-
+"""
 import pastSessions
-import mostProductiveApps
+import productiveApps
 import unproductiveApps
 import timers
+"""
 
 mydb = mysql.connector.connect(
 	host="localhost",
@@ -29,7 +31,7 @@ def clicked(num):
 
 	sleep(0.05)
 	root.destroy()
-	buttons[button_id].invoke()
+	#buttons[button_id].invoke()
 
 # When the mouse hovers over one of the buttons:
 def enter(i, event):
@@ -64,33 +66,22 @@ def homeScreen():
 	canvas1.create_text(130,190,text=text2,fill="#00ff99",font=("Georgia",20),anchor=W)
 	canvas1.create_text(900,190,text=text3,fill="#00ff99",font=("Georgia",20),anchor=W)
 
-	"""
-	# Approach 2: Non-transparent text
-	frame1=LabelFrame(canvas1,width=500,padx=10,pady=10)
-	Label1=Label(frame,text=text1,font=("Georgia",40,"bold"),fg="#112233",bg="#00b3b3")
-	Label2=Label(frame,text=text2,font=("Georgia",20),fg="#112233",bg="#00b3b3")
-	Label1.grid(row=0,column=0)
-	Label2.grid(row=1,column=0)
-	frame1.place(relx=0.1,rely=0.1)
-	"""
-
 	#* Buttons:
 	no_of_projects=4	# table #2 check how many are null and sub from 4
 	y=0.15
 	backgrounds=["#00ff00","#00ffff","#ff1a75","#ffff00"]
 	backgrounds_active=["#004d00","#004d4d","#660029","#4d4d00"]
-	functions=["Past sessions","Most productive apps","Unproductive app-o-meter","Timers"]  # I/P From table #3
-
+	functions=["View past sessions","View most productive apps","Unproductive app-o-meter","View/update all timers"]  # I/P From table #3
+	buttonNames = ["Sessions","Productive","Break-apps","Timers"]
 	global buttons
-	buttons=[pastSessions.pastSessions, mostProductiveApps.mostProductiveApps,unproductiveApps.unproductiveApps,timers.timers]
+	buttons = []	# [pastSessions.pastSessions, productiveApps.productiveApps,unproductiveApps.unproductiveApps,timers.timers]
 
 	global button_id
 	button_id=1
 
 	for i in range(no_of_projects):
 		frame=LabelFrame(canvas1,bg="#001a33",padx=10,pady=5,relief=SUNKEN,bd=5)
-		button_text="Project %d"%(i+1)
-		button=Button(frame,text=button_text,font=("Georgia",20,"bold"),fg="#112233",bg=backgrounds[i],activebackground=backgrounds_active[i],activeforeground="#cccccc",
+		button=Button(frame,text=buttonNames[i],font=("Georgia",18,"bold"),fg="#112233",bg=backgrounds[i],activebackground=backgrounds_active[i],activeforeground="#cccccc",
 			width=10,borderwidth=15,command=partial(clicked,i))
 		buttons.append(button)
 		button.bind("<Enter>",partial(enter,i))
@@ -138,12 +129,14 @@ def homeScreen():
 	sessionDuration -= breakDuration				# sessionTime = sessionTime - breakTime
 	sessionSplit = sessionDuration / index			# Just to divide the session pie into equal parts
 	breakSplit = breakDuration / (len(appList) - index)
+	thresh = 0.5
 
 	for i in appList[:index]:
-		appSplit.append(sessionSplit)
+		appSplit.append(sessionSplit + thresh)
+		thresh = thresh * -1
 	for i in appList[index:]:
-		appSplit.append(breakSplit)
-
+		appSplit.append(breakSplit + thresh)
+		thresh = thresh * -1
 
 	fig = Figure() # create a figure object
 	ax = fig.add_subplot(111) # add an Axes to the figure
