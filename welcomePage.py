@@ -8,6 +8,11 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 
+import pastSessions
+import mostProductiveApps
+import unproductiveApps
+import timers
+
 mydb = mysql.connector.connect(
 	host="localhost",
 	user="namskash",
@@ -23,9 +28,8 @@ def clicked(num):
 	global buttons
 
 	sleep(0.05)
-	
 	root.destroy()
-	#buttons[button_id].invoke()
+	buttons[button_id].invoke()
 
 # When the mouse hovers over one of the buttons:
 def enter(i, event):
@@ -78,7 +82,7 @@ def homeScreen():
 	functions=["Past sessions","Most productive apps","Unproductive app-o-meter","Timers"]  # I/P From table #3
 
 	global buttons
-	buttons=[]
+	buttons=[pastSessions.pastSessions, mostProductiveApps.mostProductiveApps,unproductiveApps.unproductiveApps,timers.timers]
 
 	global button_id
 	button_id=1
