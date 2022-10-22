@@ -68,23 +68,38 @@ def productiveApps():
 		borderwidth = 0
 	)
 
-	apps=Treeview(canvas1,columns=(1,2,3,4),show="headings",height="5")	# Table 1
+	apps=Treeview(canvas1,columns=(1,2,3,4,5),show="headings",height="5")	# Table 1
 	apps.column(1,anchor=W,width=100)
 	apps.column(2,anchor=W,width=100)
 	apps.column(3,anchor=CENTER,width=100)
 	apps.column(4,anchor=CENTER,width=100)
+	apps.column(5,anchor=CENTER,width=100)
 	apps.heading(1,text="appID")
 	apps.heading(2,text="appName")
 	apps.heading(3,text="timer")
 	apps.heading(4,text="timerMAX")
+	apps.heading(5,text="no. of times used")
 	canvas1.update()						# Otherwise body width is taken to be 1 as the next func is called before body loads
 
 	apps.place(relx = 0.05,rely = 0.15,relheight = 0.75,relwidth = 0.5)
 
+	# Get appIDs and number of breaks the app was used in
+	mycursor.execute("select appID,count(appID) from SESSION_APPS group by appID order by count(appID)")
+	temp = mycursor.fetchall()
+	appIDs = []
+	appBreakCount = []
+
+	for i in temp:
+		appIDs.append(i[0])
+		appBreakCount.append(i[1])
+
+	# Fill table
+	index = 0
 	mycursor.execute("select appID,appName,timer,timerMAX from APPS where privileged = 0x01")
 	temp = mycursor.fetchall()
 	for i in temp:
-		apps.insert('','end',values=i)
+		apps.insert('','end',values=i + (appBreakCount[index],))
+		index += 1
 	
 	#% Pie chart
 	frame=LabelFrame(canvas1,text="Distribution:",font=("Century Gothic",18),fg="#ffffff",bg="#001a33",padx=10,pady=5,relief=SUNKEN,bd=5)
@@ -92,16 +107,6 @@ def productiveApps():
 
 	appList=[]
 	appSplit=[]
-
-	mycursor.execute("select appID,count(appID) from SESSION_APPS group by appID order by count(appID)")
-	temp = mycursor.fetchall()
-	appIDs = []
-	appBreakCount = []
-
-	# Get appIDs and number of breaks the app was used in
-	for i in temp:
-		appIDs.append(i[0])
-		appBreakCount.append(i[1])
 
 	# Fill appSplit
 	totalBreaks = sum(appBreakCount)
