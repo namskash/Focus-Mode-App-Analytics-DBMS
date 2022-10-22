@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
+from os import system
 
 #import welcomePage
 
@@ -19,6 +20,11 @@ mydb = mysql.connector.connect(
 )
 
 mycursor = mydb.cursor(buffered=True)
+
+def home():
+	global root
+	system('welcomePage.py')
+	root.destroy()
 
 def productiveApps():
 	global root
@@ -44,8 +50,8 @@ def productiveApps():
 	#button = [welcomePage.homeScreen]
 
 	back_img = PhotoImage(file="images/back.png")
-	backButton = Button(canvas1,image=back_img,borderwidth=0,highlightthickness = 0, bd = 0)
-	backButton.place(relx=0.01,rely=0.035)
+	backButton = Button(canvas1,image=back_img,borderwidth=0,highlightthickness = 0, bd = 0,command = home)
+	backButton.place(relx=0.013,rely=0.036)
 
 
 	style=Style()
