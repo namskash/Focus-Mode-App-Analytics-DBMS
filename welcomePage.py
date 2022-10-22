@@ -1,39 +1,47 @@
 import mysql.connector
 from tkinter import *
-from PIL import ImageTk,Image
+from PIL import ImageTk
 from functools import partial
 import sys
 from time import sleep
 import matplotlib.pyplot as plt
-import numpy as np
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
+
+mydb = mysql.connector.connect(
+	host="localhost",
+	user="namskash",
+	password="abcd",
+	database="focusModeDBMS"
+)
+
+mycursor = mydb.cursor(buffered=True)
 
 def clicked(num):
 	global button_id
 	button_id = num+1
 	global buttons
 
-	sleep(0.1)
+	sleep(0.05)
 	
 	root.destroy()
 	#buttons[button_id].invoke()
 
-#When the mouse hovers over one of the button
+# When the mouse hovers over one of the buttons:
 def enter(i, event):
 	buttons[i]['fg'] = "white"
 
 def leave(i, event):
 	buttons[i]['fg'] = "#112233"
 
-def roles(emp_id):
-	#print(emp_id)
+def homeScreen():
 	global root
 	root=Tk()
-	root.title("Welcome!")
+	root.title("Focus sessions")
 	root.geometry("1260x720")
 	root.minsize(1260,720)
 	root.state('zoomed')
+	root.iconbitmap(r'images/logo.ico')
 
 	#* Canvas:
 	canvas1=Canvas(root,width=1260,height=720,border=0,bd=10,relief=SUNKEN,bg="#33cccc")
@@ -49,8 +57,8 @@ def roles(emp_id):
 	#? Approach 1: transparent text
 	root.wm_attributes('-transparentcolor','#ab23ff')
 	canvas1.create_text(130,150,text=text1,fill="#ffffff",font=("Georgia",40,"bold"),anchor=W)
-	canvas1.create_text(130,190,text=text2,fill="#ffffff",font=("Georgia",20),anchor=W)
-	canvas1.create_text(900,190,text=text3,fill="#ffffff",font=("Georgia",20),anchor=W)
+	canvas1.create_text(130,190,text=text2,fill="#00ff99",font=("Georgia",20),anchor=W)
+	canvas1.create_text(900,190,text=text3,fill="#00ff99",font=("Georgia",20),anchor=W)
 
 	"""
 	# Approach 2: Non-transparent text
@@ -62,14 +70,13 @@ def roles(emp_id):
 	frame1.place(relx=0.1,rely=0.1)
 	"""
 
-	#* Roles:
+	#* Buttons:
 	no_of_projects=4	# table #2 check how many are null and sub from 4
 	y=0.15
 	backgrounds=["#00ff00","#00ffff","#ff1a75","#ffff00"]
 	backgrounds_active=["#004d00","#004d4d","#660029","#4d4d00"]
-	functions=["Past sessions","Most used apps","","Timers"]  # I/P From table #3
+	functions=["Past sessions","Most productive apps","Unproductive app-o-meter","Timers"]  # I/P From table #3
 
-	## role 1:
 	global buttons
 	buttons=[]
 
@@ -93,11 +100,46 @@ def roles(emp_id):
 
 
 	#% Pie chart
-	frame=LabelFrame(canvas1,text="At a glance:",font=("Century Gothic",10),fg="#ffffff",bg="#001a33",padx=10,pady=5,relief=SUNKEN,bd=5)
+	frame=LabelFrame(canvas1,text="At a glance:",font=("Century Gothic",18),fg="#ffffff",bg="#001a33",padx=10,pady=5,relief=SUNKEN,bd=5)
 	frame.place(relx=0.6,rely=0.3,width=500,height=400)
 
-	appList=['Chrome','Prime Video','YouTube','Word','VS Code']
-	appSplit=[12,35,40,10,10]
+	appList=[]
+	appSplit=[]
+
+	mycursor.execute("select sessionID, duration from SESSIONS where sessionDate in(select max(sessionDate) from SESSIONS)")
+	temp=mycursor.fetchall()
+	sessionID, sessionDuration=temp[0][0],int(temp[0][1])
+
+	# % APPS used in session:
+	vals = (sessionID,)
+	mycursor.execute("select appName from APPS where appID in (select appID from SESSION_APPS where sessionID = %s )",vals)
+	temp = mycursor.fetchall()
+	for apps in temp:
+		appList.append(apps[0])
+
+	# % Number of focus apps
+	index = len(appList)
+
+	# % APPS used in all the breaks in session:
+	mycursor.execute("select appName from APPS where appID in (select appID from BREAK_APPS where breakID in (select breakID from BREAKS where sessionID = %s ))",vals)	# vals = sessionID
+	temp = mycursor.fetchall()
+	for apps in temp:
+		appList.append(apps[0])
+
+	# % breakTime
+	mycursor.execute("select breakDuration from BREAKS where sessionID = %s",vals)
+	temp = mycursor.fetchall()
+	breakDuration = int(temp[0][0])
+
+	sessionDuration -= breakDuration				# sessionTime = sessionTime - breakTime
+	sessionSplit = sessionDuration / index			# Just to divide the session pie into equal parts
+	breakSplit = breakDuration / (len(appList) - index)
+
+	for i in appList[:index]:
+		appSplit.append(sessionSplit)
+	for i in appList[index:]:
+		appSplit.append(breakSplit)
+
 
 	fig = Figure() # create a figure object
 	ax = fig.add_subplot(111) # add an Axes to the figure
@@ -114,4 +156,4 @@ def roles(emp_id):
 	except:
 		sys.exit()
 
-roles(1104)
+homeScreen()
