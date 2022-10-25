@@ -2,10 +2,6 @@ from tkinter.ttk import Treeview,Style
 import mysql.connector
 from PIL import ImageTk
 from tkinter import *
-import sys
-from time import sleep
-import matplotlib.pyplot as plt
-import numpy as np
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 
@@ -42,7 +38,6 @@ def unproductiveApps():
 	#* Text:
 	text1="| Unproductive Apps:"
 
-	#? Approach 1: transparent text
 	root.wm_attributes('-transparentcolor','#ab23ff')
 	canvas1.create_text(80,50,text=text1,fill="#ffffff",font=("Georgia",40,"bold"),anchor=W)
 
@@ -63,7 +58,7 @@ def unproductiveApps():
 		fieldbackground = "#edffb3"
 	)
 	style.map('Treeview',
-		background = [("selected","#e0ff33")],
+		background = [("selected","#edffb3")],	# don't show selected hack
 		foreground = [("selected","#000000")]
 	)
 	style.configure(
@@ -127,7 +122,7 @@ def unproductiveApps():
 
 	fig = Figure() # create a figure object
 	ax = fig.add_subplot(111) # add an Axes to the figure
-	ax.pie(appSplit, radius=1, labels=appList,autopct='%0.2f%%', shadow=True)
+	ax.pie(appSplit, radius=1, labels=appList,autopct='%0.2f%%', shadow=True,normalize=False)
 
 	chart = FigureCanvasTkAgg(fig,frame)
 	chart.get_tk_widget().pack()
