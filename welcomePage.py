@@ -59,7 +59,6 @@ def homeScreen():
 	text2=" Here are your stats:"
 	text3="Your last session:"
 
-	#? Approach 1: transparent text
 	root.wm_attributes('-transparentcolor','#ab23ff')
 	canvas1.create_text(130,150,text=text1,fill="#ffffff",font=("Georgia",40,"bold"),anchor=W)
 	canvas1.create_text(130,190,text=text2,fill="#00ff99",font=("Georgia",20),anchor=W)
