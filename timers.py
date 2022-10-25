@@ -47,14 +47,23 @@ def update(appIDentry,timer,timerMAX):
 	if len(temp) == 0:
 		messagebox.showerror("Error!","Invalid appID!")
 		return
-	else:
-		messagebox.showinfo("Success!!","Timers updated for appID: %s"%appIDentry)
 
 	try:
 		mycursor.execute("update APPS set timer = %s, timerMAX = %s where appID = %s",(timer,timerMAX,appIDentry))
+		# SUCCESS!
+		messagebox.showinfo("Success!!","Timers updated for appID: %s"%appIDentry)
+		global appTimers
+		appTimers.delete(*appTimers.get_children())
+
+		mydb.commit()
+		#% Fill table again:
+		mycursor.execute("select appID,appName,timer,timerMAX from APPS where privileged = 0x00")
+		temp = mycursor.fetchall()
+		for i in temp:
+			appTimers.insert('','end',values=i)
+
 	except Exception as e:
 		messagebox.showerror("Error!",e)
-	# mydb.commit()
 
 def timers():
 	global root
@@ -100,7 +109,7 @@ def timers():
 		foreground = "#000000",
 		borderwidth = 0
 	)
-
+	global appTimers
 	appTimers=Treeview(canvas1,columns=(1,2,3,4),show="headings",height="5")	# browse disables selection of tuples
 	appTimers.column(1,anchor=CENTER,width=100)
 	appTimers.column(2,anchor=CENTER,width=100)
@@ -116,12 +125,10 @@ def timers():
 	appTimers.place(relx = 0.05,rely = 0.15,relheight = 0.45,relwidth = 0.9)
 
 	# Fill table
-	index = 0
 	mycursor.execute("select appID,appName,timer,timerMAX from APPS where privileged = 0x00")
 	temp = mycursor.fetchall()
 	for i in temp:
 		appTimers.insert('','end',values=i)
-		index += 1
 	
 	canvas1.place(relwidth=1,relheight=1,relx=0,rely=0)
 
