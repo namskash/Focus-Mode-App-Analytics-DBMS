@@ -31,6 +31,7 @@ create table APPS (
 	primary key (appID)
 );
 
+/*
 create table WARNINGS (
 	warningID varchar(10) not null,
 	warningDate date not null,
@@ -39,11 +40,12 @@ create table WARNINGS (
 	primary key (warningID),
 	foreign key (appID) references APPS(appID)
 );
+*/
 
 create table SESSION_APPS (
 	sessionID varchar(10) not null,
 	appID varchar(10) not null,
-	primary key (sessionID, appID)
+	primary key (sessionID, appID),
 	foreign key (sessionID) references SESSIONS (sessionID),
 	foreign key (appID) references APPS (appID)
 );
