@@ -2,13 +2,8 @@ from tkinter.ttk import Treeview,Style
 import mysql.connector
 from PIL import ImageTk
 from tkinter import *
-import sys
-from time import sleep
-import matplotlib.pyplot as plt
-import numpy as np
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
-from os import system
 
 import welcomePage
 
@@ -43,7 +38,6 @@ def productiveApps():
 	#* Text:
 	text1="| Productive Apps:"
 
-	#? Approach 1: transparent text
 	root.wm_attributes('-transparentcolor','#ab23ff')
 	canvas1.create_text(80,50,text=text1,fill="#ffffff",font=("Georgia",40,"bold"),anchor=W)
 
@@ -64,7 +58,7 @@ def productiveApps():
 		fieldbackground = "#edffb3"
 	)
 	style.map('Treeview',
-		background = [("selected","#e0ff33")],
+		background = [("selected","#edffb3")],	# don't show selected hack
 		foreground = [("selected","#000000")]
 	)
 	style.configure(
