@@ -1,3 +1,4 @@
+from select import select
 from tkinter.ttk import Treeview,Style
 from turtle import update
 import mysql.connector
@@ -6,7 +7,7 @@ from tkinter import messagebox
 from tkinter import *
 from functools import partial
 
-#import welcomePage
+import welcomePage
 
 mydb = mysql.connector.connect(
 	host="localhost",
@@ -20,7 +21,19 @@ mycursor = mydb.cursor(buffered=True)
 def home():
 	global root
 	root.destroy()
-	#welcomePage.homeScreen()
+	welcomePage.homeScreen()
+"""
+# auto select
+def select(appTimers):
+	selected = appTimers.selection()
+	global appIDentry
+	global timerEntry
+	global timerMAXEntry
+	if len(selected) == 1:
+		appIDentry = (appTimers.item(selected)["appID"])
+		timerEntry.set(appTimers.item(selected)["timer"])
+		timerMAXEntry.set(appTimers.item(selected)["timerMAX"])
+"""
 
 def update(appIDentry,timer,timerMAX):
 	if timerMAX < timer:
@@ -78,7 +91,7 @@ def timers():
 		fieldbackground = "#edffb3"
 	)
 	style.map('Treeview',
-		background = [("selected","#e0ff33")],
+		background = [("selected","#edffb3")],	# don't show selected hack
 		foreground = [("selected","#000000")]
 	)
 	style.configure(
@@ -88,7 +101,7 @@ def timers():
 		borderwidth = 0
 	)
 
-	appTimers=Treeview(canvas1,columns=(1,2,3,4),show="headings",height="5")	# Table 1
+	appTimers=Treeview(canvas1,columns=(1,2,3,4),show="headings",height="5")	# browse disables selection of tuples
 	appTimers.column(1,anchor=CENTER,width=100)
 	appTimers.column(2,anchor=CENTER,width=100)
 	appTimers.column(3,anchor=CENTER,width=100)
@@ -97,6 +110,7 @@ def timers():
 	appTimers.heading(2,text="appName")
 	appTimers.heading(3,text="timer")
 	appTimers.heading(4,text="timerMAX")
+	#appTimers.bind("<Double-1>", lambda event: select(appTimers))	# ? Fill entry field with values of double clicked element
 	canvas1.update()						# Otherwise body width is taken to be 1 as the next func is called before body loads
 
 	appTimers.place(relx = 0.05,rely = 0.15,relheight = 0.45,relwidth = 0.9)
@@ -124,28 +138,22 @@ def timers():
 	timerMAX = StringVar()
 	timerMAX.set(timerOptions[0])
 
-	"""
-	# auto select
-	selected = appTimers.selection()
-	if len(selected) == 1:
-		appID.set(appTimers.item(selected)["appID"])
-		timer.set(appTimers.item(selected)["timer"])
-		timerMAX.set(appTimers.item(selected)["timerMAX"])
-	"""
-
 	# appID
 	Label(updateFrame,text = "Enter appID: ",font = ("Century Gothic",10),bg = "#edffb3",fg="#000000",borderwidth=0).place(relx = 0.02,rely = 0.23)
+	global appIDentry
 	appIDentry = Entry(updateFrame,width = 6,font = ("Century Gothic",15),fg="#112233")
 	appIDentry.place(relwidth = 0.06,relheight = 0.2,relx = 0.1, rely = 0.2)
 	appIDentry.focus_set()	#put cursor in appIDentry
 	
 	# timer
 	Label(updateFrame,text = "Enter new timer value: ",font = ("Century Gothic",10),bg = "#edffb3",fg="#000000",borderwidth=0).place(relx = 0.2,rely = 0.23)
+	global timerEntry
 	timerEntry = OptionMenu(updateFrame,timer,*timerOptions)
 	timerEntry.place(relwidth = 0.06,relheight = 0.2,relx = 0.32, rely = 0.2)
 	
 	# timerMAX
 	Label(updateFrame,text = "Enter new timerMAX value: ",font = ("Century Gothic",10),bg = "#edffb3",fg="#000000",borderwidth=0).place(relx = 0.4,rely = 0.23)
+	global timerMAXEntry
 	timerMAXEntry = OptionMenu(updateFrame,timerMAX,*timerOptions)
 	timerMAXEntry.place(relwidth = 0.06,relheight = 0.2,relx = 0.54, rely = 0.2)
 
@@ -155,9 +163,9 @@ def timers():
 	
 	# Enter clicks the button:
 	appIDentry.bind("<Return>", lambda event: update(appIDentry.get(),timer.get(),timerMAX.get()))
-	timerMAXEntry.bind("<Return>", lambda event: update(appIDentry.get(),timer.get(),timerMAX.get()))
 	timerEntry.bind("<Return>", lambda event: update(appIDentry.get(),timer.get(),timerMAX.get()))
-	
+	timerMAXEntry.bind("<Return>", lambda event: update(appIDentry.get(),timer.get(),timerMAX.get()))
+
 	updateFrame.place(relx = 0.05,rely = 0.65,relheight=0.2,relwidth=0.9)
 
 	root.mainloop()
