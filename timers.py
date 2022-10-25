@@ -4,10 +4,6 @@ import mysql.connector
 from PIL import ImageTk
 from tkinter import messagebox
 from tkinter import *
-import matplotlib.pyplot as plt
-import numpy as np
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from matplotlib.figure import Figure
 from functools import partial
 
 #import welcomePage
@@ -27,9 +23,22 @@ def home():
 	#welcomePage.homeScreen()
 
 def update(appIDentry,timer,timerMAX):
-	print(appIDentry,timer,timerMAX)
+	if timerMAX < timer:
+		messagebox.showwarning("Error!","timerMAX value must be greater than timer!")
+		return
+	
+	vals = (appIDentry,)
+	mycursor.execute("select appID from APPS where appID = %s and privileged = 0x00",vals)
+	temp = mycursor.fetchall()
+
+	if len(temp) == 0:
+		messagebox.showerror("Error!","Invalid appID!")
+		return
+	else:
+		messagebox.showinfo("Success!!","Timers updated for appID: %s"%appIDentry)
+
 	try:
-		mycursor.execute("update TIMERS set timer = %s, timerMAX = %s where appID = %s",(timer,timerMAX,appIDentry))
+		mycursor.execute("update APPS set timer = %s, timerMAX = %s where appID = %s",(timer,timerMAX,appIDentry))
 	except Exception as e:
 		messagebox.showerror("Error!",e)
 	# mydb.commit()
@@ -102,6 +111,7 @@ def timers():
 	
 	canvas1.place(relwidth=1,relheight=1,relx=0,rely=0)
 
+	# Update frame:
 	updateFrame = LabelFrame(canvas1,text = " Update timer:",font = ("Century Gothic",15,"italic"),bg = "#edffb3",fg="#000000",borderwidth=0)
 	
 	timerOptions = [
@@ -115,6 +125,7 @@ def timers():
 	timerMAX.set(timerOptions[0])
 
 	"""
+	# auto select
 	selected = appTimers.selection()
 	if len(selected) == 1:
 		appID.set(appTimers.item(selected)["appID"])
@@ -135,19 +146,20 @@ def timers():
 	
 	# timerMAX
 	Label(updateFrame,text = "Enter new timerMAX value: ",font = ("Century Gothic",10),bg = "#edffb3",fg="#000000",borderwidth=0).place(relx = 0.4,rely = 0.23)
-	timerMAXEntry = OptionMenu(updateFrame,timer,*timerOptions)
+	timerMAXEntry = OptionMenu(updateFrame,timerMAX,*timerOptions)
 	timerMAXEntry.place(relwidth = 0.06,relheight = 0.2,relx = 0.54, rely = 0.2)
 
 	# Update button
-	button=Button(updateFrame,text="Update",font=("Georgia",10),fg="#112233",bg="#00ff00",activebackground="#004d00",activeforeground="#cccccc",borderwidth=7,command = partial(update,appIDentry.get(),timer.get(),timerMAX.get()))
+	button=Button(updateFrame,text="Update",font=("Century Gothic",10),fg="#112233",bg="#00ff00",activebackground="#004d00",activeforeground="#cccccc",borderwidth=7,command = lambda : update(appIDentry.get(),timer.get(),timerMAX.get()))
 	button.place(relx = 0.93,rely = 0.6,relheight=0.25)
 	
-	appIDentry.bind("<Return>", lambda event: update(appIDentry.get(),timer.get(),timerMAX.get()))	#Enter signs in
-	timerMAXEntry.bind("<Return>", lambda event: update(appIDentry.get(),timer.get(),timerMAX.get()))	#Enter signs in
-	timerEntry.bind("<Return>", lambda event: update(appIDentry.get(),timer.get(),timerMAX.get()))	#Enter signs in
+	# Enter clicks the button:
+	appIDentry.bind("<Return>", lambda event: update(appIDentry.get(),timer.get(),timerMAX.get()))
+	timerMAXEntry.bind("<Return>", lambda event: update(appIDentry.get(),timer.get(),timerMAX.get()))
+	timerEntry.bind("<Return>", lambda event: update(appIDentry.get(),timer.get(),timerMAX.get()))
 	
 	updateFrame.place(relx = 0.05,rely = 0.65,relheight=0.2,relwidth=0.9)
 
 	root.mainloop()
 
-timers()
+# timers()
