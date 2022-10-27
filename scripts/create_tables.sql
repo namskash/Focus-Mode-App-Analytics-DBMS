@@ -57,3 +57,10 @@ create table BREAK_APPS (
 	foreign key (breakID) references BREAKS (breakID),
 	foreign key (appID) references APPS (appID)
 );
+
+delimiter &&  
+create procedure getNEntries (in lim int)  
+begin  
+    select * from APPS limit lim;  
+end &&  
+delimiter; 
