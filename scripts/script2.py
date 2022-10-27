@@ -3,7 +3,6 @@ from datetime import date, timedelta
 from random import randint,choices,choice,sample
 
 def getTime(time):			# converts
-	#time = time / 60
 	hours = int(time / 60)
 	minutes = int(time % 60)
 	seconds = int((time / 60) % 60)
@@ -81,9 +80,6 @@ for i in range(len(breakAppList)):
 	mycursor.execute("insert into APPS values (%s,%s,%s,%s,%s)",(appID,breakAppList[i],0,choice(timers) + " mins",choice(timersMAX) + " mins"))
 
 mydb.commit()
-
-mycursor.execute("select * from APPS")
-res = mycursor.fetchall()
 
 # SESSION_APPS
 mycursor.execute("select sessionID from SESSIONS")
