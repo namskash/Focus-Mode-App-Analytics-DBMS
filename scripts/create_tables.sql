@@ -58,9 +58,30 @@ create table BREAK_APPS (
 	foreign key (appID) references APPS (appID)
 );
 
+/*
 delimiter &&  
 create procedure getNEntries (in lim int)  
 begin  
     select * from APPS limit lim;  
 end &&  
 delimiter; 
+
+
+delimiter $$  
+create function appType(privileged int)
+returns varchar(20)
+deterministic
+begin
+    declare typeOfApp varchar(20);
+    if privileged > 0 then
+        set typeOfApp = 'privileged';
+
+    elseif privileged < 1 then
+        set typeOfApp = 'non-privileged';
+
+    end if;
+
+    return (typeOfApp);
+end $$
+delimiter
+*/
