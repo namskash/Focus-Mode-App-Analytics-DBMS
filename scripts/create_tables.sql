@@ -84,4 +84,7 @@ begin
     return (typeOfApp);
 end $$
 delimiter
+
+create trigger sumDuration before insert on BREAKS
+    for each row set @sum = @sum + NEW.breakDuration;
 */
