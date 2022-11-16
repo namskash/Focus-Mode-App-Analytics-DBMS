@@ -60,7 +60,7 @@ create table BREAK_APPS (
 
 /*
 delimiter &&  
-create procedure getNEntries (in lim int)  
+create procedure getEntries (in lim int)  
 begin  
     select * from APPS limit lim;  
 end &&  
@@ -87,4 +87,43 @@ delimiter
 
 create trigger sumDuration before insert on BREAKS
     for each row set @sum = @sum + NEW.breakDuration;
+
+// drop procedure list_apps;
+
+delimiter $$
+create procedure list_apps (inout namelist varchar(100))
+begin
+	declare finished integer default 0;
+	declare a_name varchar(100) default "";
+	
+	--declare cursor
+	declare stud_cursor 
+		cursor for
+			select privileged from APPS;
+	
+	--declare not found handler
+	declare continue handler
+	for not found set finished = 1;
+
+	--open cursor
+	open stud_cursor;
+
+	--iterate
+	get_list: LOOP
+		fetch stud_cursor into a_name;
+		if finished = 1 then
+			leave get_list;
+		end if;
+
+		--build list of apps
+		set namelist = concat(a_name,";",namelist);
+	end loop get_list;
+	close stud_cursor;
+end $$
+delimiter ;
+
+SET @name_list ="";  
+CALL list_apps(@name_list);  
+SELECT @name_list; 
+
 */
