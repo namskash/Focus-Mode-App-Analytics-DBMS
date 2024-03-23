@@ -49,3 +49,11 @@ The aim of this project is to enhance our understanding of MySQL and to create a
 *Apps used during breaks*
 + breakID
 + appID
+
+## Screenshots
+![Home](images/Home.jpg)
+![Past Sessions](images/PastSessions.jpg)
+![Past Sesions Pie Chart](images/PastSessionsPie.jpg)
+![Productive Apps](images/ProductiveApps.jpg)
+![UnproductiveApps](images/UnproductiveApps.jpg)
+![Timers](images/Timers.jpg)
